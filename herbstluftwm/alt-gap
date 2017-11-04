@@ -1,0 +1,5 @@
+#!/bin/bash
+ herbstclient set window_gap 0
+ herbstclient set frame_gap 0
+ herbstclient set frame_padding 0
+ herbstclient pad 0 25 0 0 0

@@ -1,0 +1,260 @@
+[bar/scoot]
+monitor=eDP1
+bottom = false
+width = 100%
+height = 20
+offset-x = 0
+offset-y = -35
+border-size = 40
+radius = 10
+background = ${xrdb:color5}
+foreground = #000000
+
+padding-left = 2
+;padding-right = 0
+module-margin = 1
+
+font-0 = Oswald:size=13;2
+font-1 = FontAwesome:size=12;2
+
+modules-left = music ewmh
+modules-right = volume battery date powermenu
+
+[bar/alt]
+monitor = eDP1
+bottom = false
+width = 100%
+height = 22
+offset-x = 0
+offset-y = 0
+border-size = 0
+radius = 0
+background = ${xrdb:color5}
+foreground = #000000
+padding-left = 2
+module-margin = 1
+
+font-0 = Oswald:size=13
+font-1 = FontAwesome:size=12
+
+modules-left = music ewmh
+modules-right = volume battery date powermenu
+;click-left =
+;click-middle =
+;click-right =
+;scroll-up =
+;scroll-down =
+;double-click-left =
+;double-click-middle =
+;double-click-right =
+
+[module/ewmh]
+type = internal/xworkspaces
+
+; Only show workspaces defined on the same output as the bar
+;
+; Useful if you want to show monitor specific workspaces
+; on different bars
+;
+; Default: false
+pin-workspaces = false
+
+; Create click handler used to focus desktop
+; Default: true
+enable-click = true
+
+; Create scroll handlers used to cycle desktops
+; Default: true
+enable-scroll = true
+
+; Available tags:
+;   <label-monitor>
+;   <label-state> - gets replaced with <label-(active|urgent|occupied|empty)>
+; Default: <label-state>
+format = <label-state>
+
+; Available tokens:
+;   %name%
+; Default: %name%
+label-monitor = %name%
+
+; Available tokens:
+;   %name%
+;   %icon%
+;   %index%
+; Default: %icon%  %name%
+label-active = %icon% %name%
+label-active-foreground = foreground
+label-active-background = background
+label-active-underline = #fba922
+
+; Available tokens:
+;   %name%
+;   %icon%
+;   %index%
+; Default: %icon%  %name%
+label-occupied = %icon% %name%
+label-occupied-underline = #555555
+
+; Available tokens:
+;   %name%
+;   %icon%
+;   %index%
+; Default: %icon%  %name%
+label-urgent = %icon% %name%
+label-urgent-foreground = #000000
+label-urgent-background = #bd2c40
+label-urgent-underline = #9b0a20
+
+; Available tokens:
+;   %name%
+;   %icon%
+;   %index%
+; Default: %icon%  %name%
+label-empty = %icon% %name%
+label-empty-foreground = #55
+
+[module/music]
+type = custom/script
+interval = 2
+
+label = %output:0:45:...%
+exec = ~/.config/polybar/mpris.sh
+click-left = playerctl previous
+click-right = playerctl next
+
+[module/pause]
+type = custom/script
+label = ||
+click = playerctl play-pause
+
+[module/cpu]
+type = internal/cpu
+interval = 3
+format = <label> <bar-load>
+label = 
+bar-load-width = 12
+bar-load-indicator =
+bar-load-fill = ─
+bar-load-empty = ─
+bar-used-indicator-foreground = #000000
+bar-used-fill-foreground = ${xrdb:color5}
+
+[module/spotty]
+type = custom/script
+command = /home/adien/bin/spotty
+interval = 1
+
+[module/memory]
+type = internal/memory
+interval = 3
+format = <label> <bar-used>
+label = 
+bar-used-width = 12
+bar-used-indicator =
+bar-used-fill = ─
+bar-used-empty = ─
+bar-used-indicator-foreground = #000000
+bar-used-fill-foreground = ${xrdb:color5}
+
+[module/title]
+type = internal/xwindow
+; Available tags:
+;   <label> (default)
+;format-background = ${xrdb:color1}
+;format-foreground = ${xrdb:color7}
+format-padding = 4
+
+; Available tokens:
+;   %title%
+; Default: %title%
+label = Window: %title%
+label-maxlen = 50
+
+[module/filesystem]
+type = internal/fs
+mount-0 = /
+interval = 15
+format-mounted = <label-mounted> <bar-used>
+label-mounted = 
+bar-used-width = 12
+bar-used-indicator =
+bar-used-fill = ─
+bar-used-empty = ─
+bar-used-indicator-foreground = #545455
+bar-used-fill-foreground = #079db1
+
+[module/battery]
+type = internal/battery
+full-at = 99
+battery = BAT1
+adapter = AC0
+poll-interval = 10
+format-charging = <animation-charging> <label-charging>
+format-discharging = <ramp-capacity> <label-discharging>
+format-full = <ramp-capacity> <label-full>
+label-charging = %percentage%%
+label-discharging = %percentage%%
+label-full = %percentage%%
+format-charging-padding = 1
+format-discharging-padding = 1
+format-full-padding = 1
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+animation-charging-framerate = 750
+
+[module/volume]
+type = internal/volume
+format-volume = <ramp-volume> <label-volume>
+format-muted = <label-muted>
+label-volume = %percentage%%
+label-muted =  mute
+label-muted-foreground = #aaa
+format-volume-padding = 1
+format-muted-padding = 1
+
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
+ramp-headphones-0 = 
+
+[module/date]
+type = internal/date
+interval = 1.0
+date = %a %b %d,
+time = %H:%M:%S
+date-alt = %A, %d %B %Y
+time-alt = %H:%M:%S
+label = %date% %time%
+format =  <label>
+format-padding = 2
+
+[module/powermenu]
+type = custom/menu
+
+label-open = 
+label-close = 
+label-open-padding-left = 0
+label-open-padding-right = 2
+label-close-padding = 2
+
+menu-0-0 = 
+menu-0-0-exec = poweroff
+menu-0-1 = 
+menu-0-1-exec = reboot
+
+menu-0-0-padding = 1
+menu-0-1-padding = 1
+menu-0-2-padding = 1
+menu-0-3-padding = 1
+menu-0-4-padding = 1
